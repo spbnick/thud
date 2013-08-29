@@ -50,7 +50,6 @@ function thud_unindent()
 function thud_backtrace()
 {
     declare start_frame=${1-1}
-    thud_assert '((start_frame >= 0))'
     declare frame
     declare argc
     declare argi="${#BASH_ARGV[@]}"
@@ -73,7 +72,6 @@ function thud_backtrace()
 function thud_abort_frame()
 {
     declare -r frame="$1";  shift
-    thud_assert '(("$frame" >= 0))'
     declare pid=
 
     if [ -n "${THUD_ABORT_PID:+set}" ]; then
@@ -101,17 +99,22 @@ function thud_abort()
 # Args: [eval_arg]...
 function thud_assert()
 {
-    thud_attrs_push +o errexit
+    # Use private global-style variable names
+    # to avoid clashes with "evaled" names
+    declare _THUD_ASSERT_ATTRS
+    declare _THUD_ASSERT_STATUS
+
+    read -rd '' _THUD_ASSERT_ATTRS < <(set +o) || [ $? == 1 ]
+    set +o errexit
     (
-        thud_attrs_pop
+        eval "$_THUD_ASSERT_ATTRS"
         eval "$@"
     )
-    if [ $? != 0 ]; then
-        thud_attrs_pop
+    _THUD_ASSERT_STATUS=$?
+    eval "$_THUD_ASSERT_ATTRS"
+    if [ "$_THUD_ASSERT_STATUS" != 0 ]; then
         thud_abort_frame \
             2 "${BASH_SOURCE[1]}:${BASH_LINENO[0]}: Assertion failed: $*"
-    else
-        thud_attrs_pop
     fi
 }
 
