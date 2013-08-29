@@ -84,7 +84,7 @@ function thud_arr_copy()
 # Output an (associative) array.
 # Args: _var
 # Output: the array with keys and values on separate lines with newlines
-#         and backslashes escaped, terminated by a "*"
+#         and backslashes escaped, and values prepended with "=".
 function thud_arr_print()
 {
     declare -r _var="$1"
@@ -98,17 +98,16 @@ function thud_arr_print()
             _k=\"\${_k//\\\\/\$_bs\$_bs}\"
             _v=\"\${_v//\\\\/\$_bs\$_bs}\"
             echo \"\${_k//\$'\\n'/\\\\n}\"
-            echo \"\${_v//\$'\\n'/\\\\n}\"
+            echo \"=\${_v//\$'\\n'/\\\\n}\"
         done
-        echo \"*\"
     "
 }
 
 # Parse an (associative) array from a format output by thud_arr_print.
 # Args: _var
 # Input: the array in thud_arr_print output format: keys and values on
-#        separate lines with newlines and backslashes escaped, terminated by a
-#        "*".
+#        separate lines with newlines and backslashes escaped, and values
+#        prepended with "=".
 function thud_arr_parse()
 {
     declare -r _var="$1"
@@ -117,11 +116,11 @@ function thud_arr_parse()
     declare _v
     eval "
         $_var=()
-        while IFS='' read -r _k && [ \"\$_k\" != \"*\" ]; do
-            IFS='' read -r _v || break
+        while IFS='' read -r _k; do
+            IFS='' read -r _v
             printf -v _k '%b' \"\$_k\"
             printf -v _v '%b' \"\$_v\"
-            $_var[\$_k]=\"\$_v\"
+            $_var[\$_k]=\"\${_v:1}\"
         done
     "
 }
