@@ -71,6 +71,8 @@ function thud_arr_copy()
 {
     declare _dst="$1";  shift
     declare _src="$1";  shift
+    thud_assert 'thud_is_arr "$_dst"'
+    thud_assert 'thud_is_arr "$_src"'
     declare _k
 
     eval "
@@ -88,7 +90,7 @@ function thud_arr_copy()
 function thud_arr_print()
 {
     declare -r _var="$1"
-    thud_assert 'thud_is_name "$_var"'
+    thud_assert 'thud_is_arr "$_var"'
     declare -r _bs='\'
     declare _k
     declare _v
@@ -111,7 +113,7 @@ function thud_arr_print()
 function thud_arr_parse()
 {
     declare -r _var="$1"
-    thud_assert 'thud_is_name "$_var"'
+    thud_assert 'thud_is_arr "$_var"'
     declare _k
     declare _v
     eval "
