@@ -126,6 +126,41 @@ function thud_is_name()
     [[ "$1" =~ ^[A-Za-z_][A-Za-z0-9_]*$ ]]
 }
 
+# Check if a string is an existing variable name.
+# Args: str
+function thud_is_var()
+{
+    declare -p "$1" >/dev/null 2>&1
+}
+
+# Check if a string is an existing array variable name.
+# Args: str
+function thud_is_arr()
+{
+    [[ `declare -p "$1" 2>/dev/null` == "declare -"[Aa]* ]]
+}
+
+# Check if a string is an existing indexed array variable name.
+# Args: str
+function thud_is_idx_arr()
+{
+    [[ `declare -p "$1" 2>/dev/null` == "declare -a"* ]]
+}
+
+# Check if a string is an existing associative array variable name.
+# Args: str
+function thud_is_ass_arr()
+{
+    [[ `declare -p "$1" 2>/dev/null` == "declare -A"* ]]
+}
+
+# Check if a string is an existing function name
+# Args: str
+function thud_is_func()
+{
+    declare -f "$1" >/dev/null 2>&1
+}
+
 # Check if a string is a valid boolean value, i.e. "true" or "false".
 # Args: str
 function thud_is_bool()
