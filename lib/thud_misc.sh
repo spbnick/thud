@@ -83,7 +83,7 @@ function thud_abort_frame()
     {
         echo Backtrace:
         thud_backtrace "$((frame + 2))"
-        echo -n "${BASH_SOURCE[frame+1]}:${BASH_LINENO[frame]}: "
+        echo -n "${BASH_SOURCE[frame+1]-}:${BASH_LINENO[frame]}: "
         echo "${@-Aborted}"
     } >&2
     kill -s SIGABRT "$pid"
