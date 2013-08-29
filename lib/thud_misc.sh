@@ -45,7 +45,8 @@ function thud_unindent()
     '
 }
 
-# Output a backtrace.
+# Output a backtrace, starting with the specified frame (default is 1,
+# caller's frame).
 # Args: [start_frame]
 function thud_backtrace()
 {
@@ -66,8 +67,8 @@ function thud_backtrace()
 }
 
 # Abort execution by sending SIGABRT to THUD_ABORT_PID, or to $$ if not set,
-# printing a stack trace starting from the specified frame and an optional
-# message.
+# printing a stack trace starting from the specified frame (0 is the caller's
+# frame) and an optional message (default is "Aborted").
 # Args: frame [echo_arg]...
 function thud_abort_frame()
 {
@@ -79,11 +80,12 @@ function thud_abort_frame()
     else
         pid="$$"
     fi
-    echo Backtrace: >&2
-    thud_backtrace "$((frame + 1))" >&2
-    if [ $# != 0 ]; then
-        echo "$@" >&2
-    fi
+    {
+        echo Backtrace:
+        thud_backtrace "$((frame + 2))"
+        echo -n "${BASH_SOURCE[frame+1]}:${BASH_LINENO[frame]}: "
+        echo "${@-Aborted}"
+    } >&2
     kill -s SIGABRT "$pid"
 }
 
@@ -92,7 +94,7 @@ function thud_abort_frame()
 # Args: [echo_arg]...
 function thud_abort()
 {
-    thud_abort_frame 2 "$@"
+    thud_abort_frame 1 "$@"
 }
 
 # Evaluate and execute a command string, abort shell if unsuccessfull.
@@ -113,8 +115,7 @@ function thud_assert()
     _THUD_ASSERT_STATUS=$?
     eval "$_THUD_ASSERT_ATTRS"
     if [ "$_THUD_ASSERT_STATUS" != 0 ]; then
-        thud_abort_frame \
-            2 "${BASH_SOURCE[1]}:${BASH_LINENO[0]}: Assertion failed: $*"
+        thud_abort_frame 1 "Assertion failed: $*"
     fi
 }
 
