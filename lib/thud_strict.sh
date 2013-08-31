@@ -28,7 +28,7 @@ declare -r -a THUD_STRICT_ATTRS_ON=(-o errexit
                                     -o pipefail
                                     -o noclobber)
 
-declare -r -a THUD_STRICT_ATTRS_OFF=(${THUD_STRICT_ATTRS_ON[@]/-/+})
+declare -r -a THUD_STRICT_ATTRS_OFF=("${THUD_STRICT_ATTRS_ON[@]/-/+}")
 
 declare -r -a THUD_STRICT_OPTS=(shift_verbose failglob)
 
