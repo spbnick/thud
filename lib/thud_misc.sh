@@ -45,6 +45,60 @@ function thud_unindent()
     '
 }
 
+# Get current shell process ID.
+# Args: _pid_var
+function thud_get_pid()
+{
+    declare -r _pid_var="$1"
+    if [ "${BASHPID+set}" ]; then
+        eval "$_pid_var=\$BASHPID"
+    else
+        declare _discard
+        read -r "$_pid_var" _discard < /proc/self/stat
+    fi
+}
+
+# Get the specified or current shell process parent process ID.
+# Args: _ppid_var [_pid]
+function thud_get_ppid()
+{
+    declare -r _ppid_var="$1";  shift
+    declare -r _pid="$1";       shift
+    declare _status
+    read -rd '' _status < "/proc/${_pid-self}/status"
+    read -r "$_ppid_var" < <(awk '/^PPid:/ {print $2}' <<<"$_status")
+}
+
+# Kill parent processes up to the specified PID, or none, if not found.
+# Args: signal stop_pid [_pid]
+
+# Kill a process (current shell by default) and its parents up to the
+# specified PID, don't kill any parents if a parent process with such PID is
+# not found.
+
+# Send a signal to each process between a child and a parent, starting from
+# the parent, don't send any signal if either of them is not found.
+# Args: signal parent_pid child_pid
+function thud_kill_branch()
+{
+    declare -r signal="$1";     shift
+    declare -r parent_pid="$1"; shift
+    declare -r child_pid="$1";  shift
+    declare next_child_pid
+
+    if [ "$child_pid" == "0" ]; then
+        return 1
+    fi
+
+    if [ "$child_pid" != "$parent_pid" ]; then
+        thud_get_ppid next_child_pid "$child_pid"
+        if ! thud_kill_branch "$signal" "$parent_pid" "$next_child_pid"; then
+            return 1
+        fi
+    fi
+    kill -s "$signal" "$child_pid"
+}
+
 # Output a backtrace, starting with the specified frame (default is 1,
 # caller's frame).
 # Args: [start_frame]
