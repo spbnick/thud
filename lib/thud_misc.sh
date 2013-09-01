@@ -20,7 +20,8 @@
 if [ -z "${_THUD_SH+set}" ]; then
 declare _THUD_SH=
 
-# The PID thud_abort should send SIGABRT to, or empty, meaning $$.
+# The topmost PID (along the child->parent chain) that thud_abort_frame should
+# send SIGABRT to, or current shell PID if unset or empty.
 declare THUD_ABORT_PID=
 
 # Unindent text by removing at most the number of spaces present in the first
@@ -120,27 +121,26 @@ function thud_backtrace()
     done
 }
 
-# Abort execution by sending SIGABRT to THUD_ABORT_PID, or to $$ if not set,
-# printing a stack trace starting from the specified frame (0 is the caller's
-# frame) and an optional message (default is "Aborted").
+# Abort execution by sending SIGABRT to the process branch starting from the
+# current shell and up to THUD_ABORT_PID, or just the current shell, if
+# THUD_ABORT_PID is not set, empty or such process is not found. Before doing
+# that, output a stack trace starting from the specified frame (0 is the
+# caller's frame) and an optional message (default is "Aborted").
 # Args: frame [echo_arg]...
 function thud_abort_frame()
 {
     declare -r frame="$1";  shift
-    declare pid=
-
-    if [ -n "${THUD_ABORT_PID:+set}" ]; then
-        pid="$THUD_ABORT_PID"
-    else
-        pid="$$"
-    fi
+    declare pid
     {
         echo Backtrace:
         thud_backtrace "$((frame + 2))"
         echo -n "${BASH_SOURCE[frame+1]-}:${BASH_LINENO[frame]}: "
         echo "${@-Aborted}"
     } >&2
-    kill -s SIGABRT "$pid"
+    thud_get_pid pid
+    [ "${THUD_ABORT_PID:+set}" ] &&
+        thud_kill_branch SIGABRT "$THUD_ABORT_PID" "$pid" ||
+            kill -s SIGABRT "$pid"
 }
 
 # Abort execution by sending SIGABRT to THUD_ABORT_PID, or to $$ if not set,
