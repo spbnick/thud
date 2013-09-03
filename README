@@ -37,7 +37,7 @@ INSTALLING
 Requirements:
 
     Bash >= 3.2
-    Awk >= 3.1 (only for some functions)
+    GNU Awk >= 3.1 (only for some functions)
 
 Installing from Git (autotools required):
 

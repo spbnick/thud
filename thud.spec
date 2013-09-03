@@ -7,7 +7,7 @@ License:    GPLv2+
 BuildArch:  noarch
 Source:     %{name}-%{version}.tar.gz
 
-Requires:   awk
+Requires:   gawk
 Requires:   bash
 
 %description
