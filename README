@@ -6,7 +6,7 @@ It only concerns itself with augmenting the language and the built-in library
 so far. Among the included modules and functions are:
 
     thud_arr.sh     - Array operations:
-                      push, pop, peek into an indexed array; copy, convert to
+                      push, pop, peek into an indexed array; copy, convert
                       to/from a string either an indexed or an associative
                       array as a whole.
     
@@ -30,7 +30,7 @@ so far. Among the included modules and functions are:
 
     thud_misc.sh    - Miscellaneous functions:
                       Abort execution, verify programming assertions, unindent
-                      block of text, etc.
+                      blocks of text, etc.
 
 INSTALLING
 
