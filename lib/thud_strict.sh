@@ -30,7 +30,7 @@ declare -r -a THUD_STRICT_ATTRS_ON=(-o errexit
 
 declare -r -a THUD_STRICT_ATTRS_OFF=("${THUD_STRICT_ATTRS_ON[@]/-/+}")
 
-declare -r -a THUD_STRICT_OPTS=(shift_verbose failglob)
+declare -r -a THUD_STRICT_OPTS=(shift_verbose)
 
 # Set strict mode.
 # Args: strict
