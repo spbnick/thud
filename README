@@ -2,8 +2,8 @@ THUD
 - what you get when you bash hard
 
 Thud is a library of modules aimed at making general Bash programming easier.
-It only concerns itself with augmenting the language and the built-in library
-so far. Among the included modules and functions are:
+It only concerns itself with augmenting the language and the built-in library.
+Among the included modules and functions are:
 
     thud_arr.sh     - Array operations:
                       push, pop, peek into an indexed array; copy, convert
@@ -29,15 +29,15 @@ so far. Among the included modules and functions are:
                       status; define functions executing commands as such.
 
     thud_misc.sh    - Miscellaneous functions:
-                      Abort execution, verify programming assertions, unindent
-                      blocks of text, etc.
+                      print backtraces, abort execution, verify programming
+                      assertions, unindent blocks of text, etc.
 
 INSTALLING
 
 Requirements:
 
     Bash >= 3.2
-    GNU Awk >= 3.1 (only for some functions)
+    GNU Awk >= 3.1 (for thud_unindent only)
 
 Installing from Git (autotools required):
 
@@ -60,4 +60,4 @@ Source modules:
     . thud_arr.sh
     # Etc.
 
-Running from the source only requires the "src" directory to be added to PATH.
+Running from the source tree requires the "src" directory in PATH.
