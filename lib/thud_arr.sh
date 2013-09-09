@@ -119,7 +119,7 @@ function thud_arr_parse()
     eval "
         $_var=()
         while IFS='' read -r _k; do
-            IFS='' read -r _v
+            IFS='' read -r _v || break
             printf -v _k '%b' \"\$_k\"
             printf -v _v '%b' \"\$_v\"
             $_var[\$_k]=\"\${_v:1}\"
