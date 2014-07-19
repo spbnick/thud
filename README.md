@@ -1,5 +1,6 @@
-THUD
-- what you get when you bash hard
+Thud
+====
+— what you get when you Bash hard
 
 Thud is a library of modules aimed at making general Bash programming easier.
 It only concerns itself with augmenting the language and the built-in library.
@@ -40,12 +41,13 @@ Among the included modules and functions are:
     thud_traps.sh   - Trap set operations:
                       push/pop trap state to/from a global state stack.
 
-INSTALLING
+Installing
+----------
 
 Requirements:
 
-    Bash >= 3.2
-    GNU Awk >= 3.1 (for thud_unindent only)
+* Bash >= 3.2
+* GNU Awk >= 3.1 (for thud_unindent only)
 
 Installing from Git (autotools required):
 
@@ -55,7 +57,8 @@ Installing from distribution tarball:
 
     ./configure && make install
 
-USAGE
+Usage
+-----
 
 Add library location to PATH:
 
