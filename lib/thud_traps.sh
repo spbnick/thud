@@ -1,4 +1,6 @@
 #
+# Thud - trap set operations
+#
 # Copyright (c) 2013 Red Hat, Inc. All rights reserved.
 #
 # This copyrighted material is made available to anyone wishing
@@ -15,14 +17,29 @@
 # Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
 # Boston, MA 02110-1301, USA.
 
-dist_pkgdata_DATA = \
-    thud_arr.sh     \
-    thud_attrs.sh   \
-    thud_cmd.sh     \
-    thud_func.sh    \
-    thud_misc.sh    \
-    thud_opts.sh    \
-    thud_str.sh     \
-    thud_strict.sh  \
-    thud_trace.sh   \
-    thud_traps.sh
+if [ -z "${_THUD_TRAPS_SH+set}" ]; then
+declare _THUD_TRAPS_SH=
+
+. thud_arr.sh
+
+# Trap set state stack
+declare -a _THUD_TRAPS_STACK=()
+
+# Push trap set state to the state stack, optionally invoke "trap".
+# Args: [trap_arg...]
+function thud_traps_push()
+{
+    thud_arr_push _THUD_TRAPS_STACK "`trap -p`"
+    if [ $# != 0 ]; then
+        trap "$@"
+    fi
+}
+
+# Pop trap set state from the state stack.
+function thud_traps_pop()
+{
+    eval "`thud_arr_peek _THUD_TRAPS_STACK`" || true
+    thud_arr_pop _THUD_TRAPS_STACK
+}
+
+fi # _THUD_TRAPS_SH

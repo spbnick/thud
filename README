@@ -32,6 +32,14 @@ Among the included modules and functions are:
                       print backtraces, abort execution, verify programming
                       assertions, unindent blocks of text, etc.
 
+    thud_trace.sh   - Debug tracing support:
+                      enable/disable trace output via DEBUG trap,
+                      push/pop tracing state to/from a global state stack,
+                      disable tracing of functions matching glob patterns.
+
+    thud_traps.sh   - Trap set operations:
+                      push/pop trap state to/from a global state stack.
+
 INSTALLING
 
 Requirements:
