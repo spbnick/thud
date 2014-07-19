@@ -32,6 +32,20 @@ declare -r -a THUD_STRICT_ATTRS_OFF=("${THUD_STRICT_ATTRS_ON[@]/-/+}")
 
 declare -r -a THUD_STRICT_OPTS=(shift_verbose)
 
+# Enable strict mode.
+function thud_strict_on()
+{
+    set "${THUD_STRICT_ATTRS_ON[@]}"
+    shopt -s "${THUD_STRICT_OPTS[@]}"
+}
+
+# Disable strict mode.
+function thud_strict_off()
+{
+    set "${THUD_STRICT_ATTRS_OFF[@]}"
+    shopt -u "${THUD_STRICT_OPTS[@]}"
+}
+
 # Set strict mode.
 # Args: strict
 function thud_strict_set()
@@ -39,24 +53,10 @@ function thud_strict_set()
     declare -r strict="$1"
     thud_assert 'thud_is_bool "$strict"'
     if "$strict"; then
-        set "${THUD_STRICT_ATTRS_ON[@]}"
-        shopt -s "${THUD_STRICT_OPTS[@]}"
+        thud_strict_on
     else
-        set "${THUD_STRICT_ATTRS_OFF[@]}"
-        shopt -u "${THUD_STRICT_OPTS[@]}"
+        thud_strict_off
     fi
-}
-
-# Enable strict mode.
-function thud_strict_on()
-{
-    thud_strict_set true
-}
-
-# Disable strict mode.
-function thud_strict_off()
-{
-    thud_strict_set false
 }
 
 # Push current attributes and options to the corresponding stacks and replace
