@@ -18,3 +18,5 @@
 SUBDIRS = lib src
 
 dist_noinst_SCRIPTS = bootstrap
+
+dist_doc_DATA = README.md
