@@ -35,7 +35,7 @@ function thud_cmd_relaxed()
     return $status
 }   
 
-# Execute a command within within a "strict" mode subshell.
+# Execute a command within a "strict" mode subshell.
 # Args: ...
 function thud_cmd_strict()
 {
