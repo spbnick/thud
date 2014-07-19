@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # Output a Bash script setting installation-dependent environment variables
-# for Epoxy test framework
+# for Thud Bash library
 #
 # Copyright (c) 2013 Red Hat, Inc. All rights reserved.
 #
