@@ -9,14 +9,25 @@
 # to use, modify, copy, or redistribute it subject to the terms
 # and conditions of the GNU General Public License version 2.
 
-cat <<EOF
-if [ -z "\${_THUD_ENV_SH+set}" ]; then
-declare _THUD_ENV_SH=
+cat <<"EOF"
+if [ -z "${_THUD_LIB_SH+set}" ]; then
+declare _THUD_LIB_SH=
 
-declare THUD_LIB_DIR
-THUD_LIB_DIR=`readlink -f \`dirname $0\`/../lib`  # Replaced on installation
+declare -r THUD_LIB_PATH="../lib"  # Replaced on installation
 
-PATH="\$THUD_LIB_DIR:\$PATH"
+if [ "${THUD_LIB_PATH::1}" == "/" ]; then
+    THUD_LIB_DIR="$THUD_LIB_PATH"
+else
+EOF
 
-fi #_THUD_ENV_SH
+printf '    THUD_LIB_DIR=`readlink -f %q/"$THUD_LIB_PATH"`\n' \
+       "`dirname \"\$0\"`"
+
+cat <<"EOF"
+fi
+declare -r THUD_LIB_DIR
+
+PATH="$THUD_LIB_DIR:$PATH"
+
+fi #_THUD_LIB_SH
 EOF

@@ -20,5 +20,33 @@ AC_INIT([thud], [1])
 AM_INIT_AUTOMAKE([1.10 -Wall foreign])
 AC_PROG_INSTALL
 AC_PROG_SED
+
+AC_ARG_ENABLE([docs],
+              [AC_HELP_STRING(
+                    [--disable-docs],
+                    [Disable installation of documentation]
+               )
+              ],
+              [
+                    case "${enableval}" in
+                        yes)    enable_docs=true ;;
+                        no)     enable_docs=false ;;
+                        *)      AC_MSG_ERROR([invalid --enable-docs value]) ;;
+                    esac
+              ],
+              [enable_docs=true]
+)
+AM_CONDITIONAL([ENABLE_DOCS], [test x$enable_docs = xtrue])
+
+AC_ARG_ENABLE([lib-path],
+              [AC_HELP_STRING(
+                    [--enable-lib-path=PATH],
+                    [Specify installed module library path [pkgdatadir]]
+               )
+              ],
+              [thud_lib_path="$enableval"]
+)
+AC_SUBST(thud_lib_path)
+
 AC_CONFIG_FILES([Makefile lib/Makefile src/Makefile])
 AC_OUTPUT
