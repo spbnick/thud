@@ -70,13 +70,6 @@ function thud_get_ppid()
     read -r "$_ppid_var" < <(awk '/^PPid:/ {print $2}' <<<"$_status")
 }
 
-# Kill parent processes up to the specified PID, or none, if not found.
-# Args: signal stop_pid [_pid]
-
-# Kill a process (current shell by default) and its parents up to the
-# specified PID, don't kill any parents if a parent process with such PID is
-# not found.
-
 # Send a signal to each process between a child and a parent, starting from
 # the parent, don't send any signal if either of them is not found.
 # Args: signal parent_pid child_pid
@@ -143,8 +136,11 @@ function thud_abort_frame()
             kill -s SIGABRT "$pid"
 }
 
-# Abort execution by sending SIGABRT to THUD_ABORT_PID, or to $$ if not set,
-# printing the caller's stack trace and an optional message.
+# Abort execution by sending SIGABRT to the process branch starting from the
+# current shell and up to THUD_ABORT_PID, or just the current shell, if
+# THUD_ABORT_PID is not set, empty or such process is not found. Before doing
+# that, output a stack trace starting from the caller's frame and an optional
+# message (default is "Aborted").
 # Args: [echo_arg]...
 function thud_abort()
 {
