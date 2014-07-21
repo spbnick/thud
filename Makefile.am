@@ -19,6 +19,8 @@ SUBDIRS = lib src
 
 dist_noinst_SCRIPTS = bootstrap
 
+dist_noinst_DATA = thud.spec
+
 if ENABLE_DOCS
 dist_doc_DATA = README.md
 endif
