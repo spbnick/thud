@@ -23,7 +23,7 @@ make %{?_smp_mflags}
 make install DESTDIR=%{buildroot}
 
 %files
-%doc
+%doc %{_datadir}/doc/%{name}/README.md
 %{_bindir}/thud-*
 %{_datadir}/%{name}
 
