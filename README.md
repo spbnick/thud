@@ -62,7 +62,7 @@ Usage
 
 Add library location to PATH:
 
-    eval "`thud-env || echo exit 1`"
+    . <(thud-env || echo exit 1)
 
 Source modules:
 
