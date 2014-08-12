@@ -1,6 +1,6 @@
 Thud
 ====
-— what you get when you Bash hard
+— when you Bash hard
 
 Thud is a library of modules aimed at making general Bash programming easier.
 It only concerns itself with augmenting the language and the built-in library.
