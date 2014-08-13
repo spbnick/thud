@@ -1,5 +1,7 @@
 #
-# Copyright (c) 2013 Red Hat, Inc. All rights reserved.
+# Thud - all modules
+#
+# Copyright (c) 2014 Red Hat, Inc. All rights reserved.
 #
 # This copyrighted material is made available to anyone wishing
 # to use, modify, copy, or redistribute it subject to the terms
@@ -15,15 +17,13 @@
 # Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
 # Boston, MA 02110-1301, USA.
 
-dist_pkgdata_DATA = \
-    thud.sh         \
-    thud_arr.sh     \
-    thud_attrs.sh   \
-    thud_cmd.sh     \
-    thud_func.sh    \
-    thud_misc.sh    \
-    thud_opts.sh    \
-    thud_str.sh     \
-    thud_strict.sh  \
-    thud_trace.sh   \
-    thud_traps.sh
+if [ -z "${_THUD_SH+set}" ]; then
+declare _THUD_SH=
+
+declare _THUD_MOD
+for _THUD_MOD in "$THUD_LIB_DIR/thud_"*".sh"; do
+    . "$_THUD_MOD"
+done
+unset _THUD_MOD
+
+fi # _THUD_SH
