@@ -17,8 +17,8 @@
 # Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
 # Boston, MA 02110-1301, USA.
 
-if [ -z "${_THUD_SH+set}" ]; then
-declare _THUD_SH=
+if [ -z "${_THUD_MISC_SH+set}" ]; then
+declare _THUD_MISC_SH=
 
 # The topmost PID (along the child->parent chain) that thud_abort_frame should
 # send SIGABRT to, or current shell PID if unset or empty.
@@ -218,4 +218,4 @@ function thud_is_bool()
     [[ "$1" == "true" || "$1" == "false" ]]
 }
 
-fi # _THUD_SH
+fi # _THUD_MISC_SH
