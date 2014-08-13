@@ -18,7 +18,8 @@
 dist_bin_SCRIPTS = \
     thud-env
 
-thud_lib_path ?= $(pkgdatadir)
 install-exec-hook:
-	$(SED) -e 's#\(THUD_LIB_PATH=\).*#\1"$(thud_lib_path)"#' \
+	THUD_LIB_PATH="$(thud_lib_path)"; \
+	THUD_LIB_PATH="$${THUD_LIB_PATH:-$(pkgdatadir)}"; \
+	$(SED) -e "s#\(THUD_LIB_PATH=\).*#\1\"$$THUD_LIB_PATH\"#" \
            -i "$(DESTDIR)$(bindir)/thud-env"
